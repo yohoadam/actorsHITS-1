@@ -17,9 +17,9 @@ print 'connected!\n'
 
 movie_dict = {}
 
-OUTPUT_DIR = '/root/Documents/csce470/Final_Project/json_movies/'
-INV_OUTPUT_DIR = '/root/Documents/csce470/Final_Project/json_non_movies/'
-ERROR_OUTPUT_DIR = '/root/Documents/csce470/Final_Project/repo/actorsHITS/crawler/'
+OUTPUT_DIR = './'
+INV_OUTPUT_DIR = './'
+ERROR_OUTPUT_DIR = './'
 
 PRINT_INTERVAL = 250     # After how many loop iterations should a status be output
 RECORD_INTERVAL = 100    # How many movies should be recorded per file
