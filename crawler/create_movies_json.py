@@ -42,7 +42,7 @@ while id <= END_ID:
         movie = ia.get_movie(id)
         if movie == None or (movie.get('kind') != 'movie' and movie.get('kind') != 'tv movie' and movie.get('kind') != 'video movie' and movie.get('kind') != 'tv mini series'):
             # Not a valid movie
-            inv_movie = {'id':id}
+            inv_movie = {settings.ID_K:id}
             invalid_string += json.dumps(inv_movie) + '\n'
             invalid_movie_count += 1
             id += 1
@@ -52,24 +52,24 @@ while id <= END_ID:
         if id % PRINT_INTERVAL == 0:
             print 'Looking up ID {0} of {1}\t({2:.1%}, {3:.3%} of total):\t'.format(id, END_ID, float(id-START_ID+1)/(END_ID-START_ID), float(id)/MAX_MOVIE_ID), u'{0}'.format(title)
 
-        rating = movie.get('rating')
-        votes = movie.get('votes')
-        genres = movie.get('genres')
-        director = movie.get('director')
+        rating = movie.get(settings.RATING_K)
+        votes = movie.get(settings.VOTE_K)
+        genres = movie.get(settings.M_GENRES_K)
+        director = movie.get(settings.DIRECTOR_K)
         director_dict = {}
         if director != None and director != []:
             for d in director:
-                director_dict[d.getID()] = d.get('name')
+                director_dict[d.getID()] = d.get(settings.NAME_K)
 
         if rating == None or votes == None or genres == None or genres == []:
             # We can only deal with movies that have this information
-            inv_movie = {'id':id}
+            inv_movie = {settings.ID_K:id}
             invalid_string += json.dumps(inv_movie) + '\n'
             invalid_movie_count += 1
             id += 1
             continue
 
-        movie_dict[id] = {'id':id, 'title':title, 'rating':rating, 'votes':votes, 'genres':genres, 'director':director_dict}
+        movie_dict[id] = {settings.ID_K:id, settings.TITLE_K:title, settings.RATING_K:rating, settings.VOTE_K:votes, settings.M_GENRES_K:genres, settings.DIRECTOR_K:director_dict}
 
         # Add movie info to string to be output to a file later
         sub_file_string += json.dumps(movie_dict[id]) + '\n'
@@ -90,7 +90,7 @@ while id <= END_ID:
 
         # Write the invalid titles found to a file
         if invalid_movie_count % RECORD_INTERVAL == 0:
-            subfilename = INV_OUTPUT_DIR + 'sub_non_movies_' + str(invalid_file_num) + '.json'
+            subfilename = INV_OUTPUT_DIR + 'sub_inv_movies_' + str(invalid_file_num) + '.json'
             print '\nwriting', subfilename, '...'
             sub_file = open(subfilename, 'w')
             sub_file.write(invalid_string)
@@ -111,17 +111,20 @@ while id <= END_ID:
         pass
 
 # Write the residual movies to a file
-subfilename = OUTPUT_DIR + 'sub_movies_' + str(start_id) + '-' + str(id-1) + '.json'
-print '\nwriting', subfilename, '...'
-sub_file = open(subfilename, 'w')
-sub_file.write(sub_file_string)
-sub_file.close()
-print
+if sub_file_string != '':
+    subfilename = OUTPUT_DIR + 'sub_movies_' + str(start_id) + '-' + str(id-1) + '.json'
+    print '\nwriting', subfilename, '...'
+    sub_file = open(subfilename, 'w')
+    sub_file.write(sub_file_string)
+    sub_file.close()
+    print
 
 # Write the residual invalid titles to a file
-inv_filename = INV_OUTPUT_DIR + 'sub_non_movies_' + str(invalid_file_num) + '.json'
-print 'dumping non-movies', inv_filename, '...'
-invalid_file = open(inv_filename, 'w')
-invalid_file.write(invalid_string)
-invalid_file.close()
-print
+if invalid_string != '':
+    inv_filename = INV_OUTPUT_DIR + 'sub_inv_movies_' + str(invalid_file_num) + '.json'
+    print 'dumping invalid movies', inv_filename, '...'
+    invalid_file = open(inv_filename, 'w')
+    invalid_file.write(invalid_string)
+    invalid_file.close()
+    print
+
