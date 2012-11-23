@@ -96,11 +96,11 @@ class HITS(object):
             print '\taverage movies per actor:', (float(self.total_genre_movies) / len(self.actor_genre_dict))
 
     def core_algorithm(self, iterations=None):
-        iteration = 1
         if iterations is None:
             iterations = self.MAX_HITS_ITERATIONS
 
         actor_list = []
+        iteration = 1
 
         dirty = True
         while dirty and iteration <= iterations:
