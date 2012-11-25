@@ -30,7 +30,7 @@ inv_movie_list = []
 OUTPUT_DIR = ''
 
 valid_string = ''    # JSON-formatted string of all valid movies ready to be dumped to a file
-invalid_string = ''  # JSON-formatted string of all non-movies looked up
+invalid_string = ''  # JSON-formatted string of all invalid movies looked up
 reps = 0
 
 # Read in all of the offline movie information collected
@@ -44,7 +44,7 @@ for movie in movies:
     else:
         reps += 1
 
-print '(', len(movie_id_set), 'unique items,', reps, 'repeats removed )'
+print '({0:,} unique items, {1:,} repeats removed)'.format(len(movie_id_set), reps)
 
 # Sort all movies by database ID to keep things ordered
 sorted_movies = sorted(movie_list, key=itemgetter('id'))
@@ -66,7 +66,7 @@ for inv_movie in inv_movies:
     else:
         reps += 1
 
-print '(', len(inv_movie_id_set), 'unique items,', reps, 'repeats removed )'
+print '({0:,} unique items, {1:,} repeats removed)'.format(len(inv_movie_id_set), reps)
 
 # Sort by database ID to keep things ordered
 sorted_inv_movies = sorted(inv_movie_list, key=itemgetter('id'))
@@ -86,7 +86,7 @@ print
 
 # Write invalid movie IDs to a file
 inv_filename = OUTPUT_DIR + 'all_recorded_invalid_movies.json'
-print 'dumping non-movies', inv_filename, '...'
+print 'dumping invalid movies', inv_filename, '...'
 invalid_file = open(inv_filename, 'w')
 invalid_file.write(invalid_string)
 invalid_file.close()

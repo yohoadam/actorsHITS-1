@@ -19,7 +19,7 @@ from imdb import IMDb
 from imdb import Person
 from imdb import Movie
 
-if len(sys.argv) < 3):
+if len(sys.argv) < 3:
     print 'Missing input argument!\n'
     print '\tusage:', sys.argv[0], '<movie_info.json> <invalid_movie_ids.json>\n'
     quit()
