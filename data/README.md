@@ -3,7 +3,7 @@
 Contains all actor data collected from the database. Data is split into blocks of ID ranges of 100,000. Each individual JSON file should contain a little less than half that number in actual actor information.
 
 Actor information is in the form (all contained on one line):
-&lt;pre&gt;&lt;code&gt;
+<pre><code>
 {
   "movies": {
     &lt;movie_id*&gt; : {
@@ -19,12 +19,11 @@ Actor information is in the form (all contained on one line):
   "id": &lt;actor_id&gt;,
   "name": &lt;actor_name&gt;
 }
-&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
 
 where the values are defined as follows:
 
-&lt;pre&gt;&lt;code&gt;
-
+<pre><code>
 &lt;movie_id*&gt;          Database ID of the movie (string)
 &lt;movie_id&gt;           Database ID of the movie (integer)
 &lt;rating&gt;             Rating of the movie (float)
@@ -36,5 +35,4 @@ where the values are defined as follows:
 &lt;genre_movie_i_id&gt;   Database ID of a movie in this genre (integer) (Identical to &lt;movie_id&gt;)
 &lt;actor_id&gt;           Database ID of an actor (integer)
 &lt;actor_name&gt;         Name of an actor (string)
-
-&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
