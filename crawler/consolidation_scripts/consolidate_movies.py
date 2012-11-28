@@ -1,5 +1,5 @@
 # Consolidate valid and invalid movie information by removing repeated values from each and
-# outputting the result to two separate files.
+# outputting the result to two separate, ordered files.
 #
 # usage: python consolidate_movies.py <movie_info.json> <invalid_movie_info.json>
 #
@@ -31,10 +31,11 @@ OUTPUT_DIR = ''
 
 valid_string = ''    # JSON-formatted string of all valid movies ready to be dumped to a file
 invalid_string = ''  # JSON-formatted string of all invalid movies looked up
-reps = 0
+reps = 0             # Number of repeated movies
+duals = 0            # Number of movies in both the valid and invalid lists
 
 # Read in all of the offline movie information collected
-print 'consolidating valid movie info...'
+print 'reading valid movie info...'
 movies = utils.read_file(sys.argv[1])
 for movie in movies:
     movie_id = movie['id']
@@ -42,6 +43,7 @@ for movie in movies:
         movie_id_set.add(movie_id)
         movie_list.append(movie)
     else:
+        # Repeated movie ID; ignore
         reps += 1
 
 print '({0:,} unique items, {1:,} repeats removed)'.format(len(movie_id_set), reps)
@@ -55,18 +57,22 @@ for movie in sorted_movies:
 print 'done!\n'
 
 # Read in all of the offline invalid movie information collected
-print 'consolidating invalid movie info...'
 reps = 0
+print 'reading invalid movie info...'
 inv_movies = utils.read_file(sys.argv[2])
 for inv_movie in inv_movies:
     movie_id = inv_movie['id']
-    if movie_id not in inv_movie_id_set:
+    if movie_id in movie_id_set:
+        # "Invalid" movie has already been counted as valid; do not record as invalid
+        duals += 1
+    elif movie_id not in inv_movie_id_set:
         inv_movie_id_set.add(movie_id)
         inv_movie_list.append(inv_movie)
     else:
+        # Repeated movie ID; ignore
         reps += 1
 
-print '({0:,} unique items, {1:,} repeats removed)'.format(len(inv_movie_id_set), reps)
+print '({0:,} unique items, {1:,} repeats removed, {2:,} in both lists)'.format(len(inv_movie_id_set), reps, duals)
 
 # Sort by database ID to keep things ordered
 sorted_inv_movies = sorted(inv_movie_list, key=itemgetter('id'))

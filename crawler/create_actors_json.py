@@ -34,7 +34,7 @@ for movie in movies:
     movie_id = movie[settings.ID_K]
     if movie_id not in movie_dict:
         movie_dict[movie_id] = movie
-print '\tread', len(movie_dict), 'valid movies'
+print 'read {:,} valid movies'.format(len(movie_dict))
 print 'done!\n'
 
 # Read in all of the offline invalid movie information collected
@@ -44,7 +44,7 @@ for inv_movie in inv_movies:
     movie_id = inv_movie[settings.ID_K]
     if movie_id not in inv_movie_set:
         inv_movie_set.add(movie_id)
-print '\tread', len(inv_movie_set), 'invalid movie IDs'
+print 'read {:,} invalid movie IDs'.format(len(inv_movie_set))
 print 'done!\n'
 
 # Connect to the database
@@ -85,7 +85,7 @@ while id <= END_ID:
 
         name = person.get(settings.NAME_K)
         if id % PRINT_INTERVAL == 0:
-            print 'Looking up ID {0} of {1}\t({2:.1%}, {3:.3%} of total):\t'.format(id, END_ID, float(id-START_ID+1)/(END_ID-START_ID), float(id)/MAX_PERSON_ID), u'{0}'.format(name)
+            print 'Looking up ID {0:,} of {1:,}\t({2:.1%}, {3:.3%} of total):\t'.format(id, END_ID, float(id-START_ID+1)/(END_ID-START_ID+1), float(id)/MAX_PERSON_ID), u'{0}'.format(name)
 
         # Set up dictionary for recording actor's information
         actor_dict = { settings.ID_K:id, settings.NAME_K:name, settings.A_GENRES_K:{}, settings.A_MOVIES_K:{} }
@@ -109,7 +109,7 @@ while id <= END_ID:
 
             if film.get('kind') != 'movie':
                 # Record newly found invalid movies
-                if movie_id not in inv_movie_set:
+                if movie_id not in inv_movie_set and movie_id not in movie_dict:
                     inv_movie_set.add(movie_id)
                     inv_movie = {settings.ID_K:movie_id}
                     invalid_string += json.dumps(inv_movie) + '\n'
@@ -140,7 +140,7 @@ while id <= END_ID:
 
             if rating == None or votes == None or genres == None or genres == []:
                 # We can only deal with movies that have this information
-                if movie_id not in inv_movie_set:
+                if movie_id not in inv_movie_set and movie_id not in movie_dict:
                     inv_movie_set.add(movie_id)
                     inv_movie = {settings.ID_K:movie_id}
                     invalid_string += json.dumps(inv_movie) + '\n'
