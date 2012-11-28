@@ -23,8 +23,7 @@ Actor information is in the form (all contained on one line):
 
 where the values are defined as follows:
 
-<pre><code>
-&lt;movie_id*&gt;          Database ID of the movie (string)
+<pre><code>&lt;movie_id*&gt;          Database ID of the movie (string)
 &lt;movie_id&gt;           Database ID of the movie (integer)
 &lt;rating&gt;             Rating of the movie (float)
 &lt;genre_i&gt;            Genre name (string) (e.g. "Drama", "Action")
